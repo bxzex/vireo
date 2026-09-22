@@ -1,0 +1,56 @@
+name: Build plugins
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S plugin -B plugin/build -G "Visual Studio 17 2022" -A x64
+      - name: Build
+        run: cmake --build plugin/build --config Release --target Vireo_VST3 Vireo_Standalone --parallel
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force out/Vireo | Out-Null
+          Copy-Item -Recurse plugin/build/Vireo_artefacts/Release/VST3/Vireo.vst3 out/Vireo/
+          Copy-Item plugin/build/Vireo_artefacts/Release/Standalone/Vireo.exe out/Vireo/
+          Copy-Item plugin/package/README.txt out/Vireo/
+          Compress-Archive -Path out/Vireo/* -DestinationPath Vireo-Windows.zip
+      - uses: actions/upload-artifact@v4
+        with: { name: Vireo-Windows, path: Vireo-Windows.zip }
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh release upload "${{ github.event.release.tag_name }}" Vireo-Windows.zip --clobber
+
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install ninja
+      - name: Configure
+        run: cmake -S plugin -B plugin/build -G Ninja -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build plugin/build --target Vireo_AU Vireo_VST3 Vireo_Standalone
+      - name: Package
+        run: |
+          mkdir -p out/Vireo
+          cp -R plugin/build/Vireo_artefacts/Release/AU/Vireo.component plugin/build/Vireo_artefacts/Release/VST3/Vireo.vst3 plugin/build/Vireo_artefacts/Release/Standalone/Vireo.app out/Vireo/
+          for b in out/Vireo/*.component out/Vireo/*.vst3 out/Vireo/*.app; do codesign --force --deep -s - "$b"; done
+          cp "plugin/package/Install Vireo.command" plugin/package/README.txt out/Vireo/
+          (cd out && ditto -c -k --keepParent Vireo ../Vireo-macOS.zip)
+      - uses: actions/upload-artifact@v4
+        with: { name: Vireo-macOS, path: Vireo-macOS.zip }
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh release upload "${{ github.event.release.tag_name }}" Vireo-macOS.zip --clobber
