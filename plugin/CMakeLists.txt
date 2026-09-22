@@ -5,7 +5,7 @@ if(APPLE)
   set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "")
 endif()
 
-project(Vireo VERSION 1.0.0 LANGUAGES C CXX)
+project(Vireo VERSION 1.1.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 # Use a local JUCE checkout if there is one, otherwise fetch it
@@ -41,12 +41,14 @@ juce_add_plugin(Vireo
   AU_MAIN_TYPE kAudioUnitType_MusicDevice
   VST3_CATEGORIES Instrument Synth
   FORMATS ${VIREO_FORMATS}
+  ICON_BIG "${CMAKE_CURRENT_SOURCE_DIR}/Resources/icon.png"
   PRODUCT_NAME "Vireo")
 
 juce_add_binary_data(VireoData SOURCES
   Resources/BarlowCondensed-SemiBold.ttf
   Resources/BarlowCondensed-Bold.ttf
-  Resources/ShareTechMono-Regular.ttf)
+  Resources/ShareTechMono-Regular.ttf
+  Resources/vireo-logo.png)
 
 target_sources(Vireo PRIVATE Source/PluginProcessor.cpp Source/PluginEditor.cpp)
 target_compile_definitions(Vireo PUBLIC

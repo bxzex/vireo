@@ -1,6 +1,6 @@
 # Generates Source/Params.h and Source/Presets.h from the web build's spec, so the
 # plugin and the page can never drift apart. Re-run after changing index.html:
-#   node tools/dump.js && python3 tools/gen.py
+#   NODE_PATH=<your node_modules> node tools/dump.js && python3 tools/gen.py  (needs Playwright and the page served on :8777)
 import json, os
 here=os.path.dirname(os.path.abspath(__file__))
 d=json.load(open(os.path.join(here,"vireo.json")))

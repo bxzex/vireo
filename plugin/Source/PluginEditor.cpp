@@ -465,7 +465,9 @@ public:
         for (auto pt : { Point<float> (44, 10), Point<float> ((float) W - 56, 10), Point<float> (44, (float) H - 22), Point<float> ((float) W - 56, (float) H - 22) }) {
             ColourGradient sc (Colour (0xff8b8e93), pt.x + 4, pt.y + 4, Colour (0xff2a2b2e), pt.x + 12, pt.y + 12, true); g.setGradientFill (sc); g.fillEllipse (pt.x, pt.y, 12, 12);
             g.setColour (Colour (0xff1c1d1f)); g.drawLine (pt.x + 2.5f, pt.y + 8, pt.x + 9.5f, pt.y + 4, 2); }
-        g.setColour (Colour (th.logo)); g.setFont (ed.silk (36, true).withExtraKerningFactor (.32f)); g.drawText ("VIREO", Rectangle<float> (72, 20, 240, 40), Justification::centredLeft);
+        // the wordmark is an alpha mask, filled with the finish's logo colour
+        static const Image logo = ImageCache::getFromMemory (BinaryData::vireologo_png, BinaryData::vireologo_pngSize);
+        g.setColour (Colour (th.logo)); g.drawImage (logo, Rectangle<float> (72, 22, 140, 36.5f), RectanglePlacement::xLeft | RectanglePlacement::yMid, true);
         g.setColour (Colour (th.sub)); g.setFont (ed.silk (11.5f).withExtraKerningFactor (.26f)); g.drawText ("VR-8 POLYPHONIC SYNTHESIZER", Rectangle<float> (72, 60, 300, 14), Justification::centredLeft);
         g.setColour (Colour (th.sub)); g.drawText ("FINISH", Rectangle<float> (310, 24, 100, 12), Justification::centredLeft);
         g.setColour (Colour (th.sub)); g.setFont (silkOf (ed, 11.f));

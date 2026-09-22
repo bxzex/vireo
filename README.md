@@ -4,7 +4,7 @@ A synth I built that runs in the browser and also works as a plugin in Logic, Ab
 
 Try it here: https://bxzex.github.io/vireo/
 
-It's a two-oscillator poly synth with unison, a sub, noise and FM. There's a filter with its own envelope, two LFOs, glide, an arpeggiator, and drive, chorus, delay and reverb on the end. It comes with 50 presets and six different panel colours. The mod wheel can be set to vibrato, pitch, cutoff or LFO 2.
+It's a two-oscillator poly synth with unison, a sub, noise and FM. There's a filter with its own envelope, two LFOs, glide, an arpeggiator, and drive, chorus, delay and reverb on the end. It comes with 100 presets and six different panel colours. The mod wheel can be set to vibrato, pitch, cutoff or LFO 2.
 
 You can play it with your computer keyboard (A to K, with Z and X to change octave), by clicking the keys, or with a MIDI controller.
 
@@ -18,7 +18,7 @@ On Windows, copy `Vireo.vst3` into `C:\Program Files\Common Files\VST3` and resc
 
 ## MIDI kit
 
-On the page, hit MIDI kits. There are 30 melodies, basslines, chord progressions and arps in four minor keys. Click one to hear it on the current sound, save the .mid, or just drag it into your DAW. There's also a zip with all of them.
+On the page, hit MIDI kits. There are 60 melodies, basslines, chord progressions and arps in four minor keys. Click one to hear it on the current sound, save the .mid, or just drag it into your DAW. There's also a zip with all of them.
 
 ## How it's put together
 
