@@ -4,6 +4,10 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: Release to attach the builds to
+        default: v1.0.0
 
 permissions:
   contents: write
@@ -14,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Configure
-        run: cmake -S plugin -B plugin/build -G "Visual Studio 17 2022" -A x64
+        run: cmake -S plugin -B plugin/build -A x64
       - name: Build
         run: cmake --build plugin/build --config Release --target Vireo_VST3 Vireo_Standalone --parallel
       - name: Package
@@ -28,9 +32,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: { name: Vireo-Windows, path: Vireo-Windows.zip }
       - name: Attach to the release
-        if: github.event_name == 'release'
-        env: { GH_TOKEN: "${{ github.token }}" }
-        run: gh release upload "${{ github.event.release.tag_name }}" Vireo-Windows.zip --clobber
+        env: { GH_TOKEN: "${{ github.token }}", TAG: "${{ github.event.release.tag_name || inputs.tag }}" }
+        run: gh release upload "$env:TAG" Vireo-Windows.zip --clobber
 
   macos:
     runs-on: macos-14
@@ -51,6 +54,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: { name: Vireo-macOS, path: Vireo-macOS.zip }
       - name: Attach to the release
-        if: github.event_name == 'release'
-        env: { GH_TOKEN: "${{ github.token }}" }
-        run: gh release upload "${{ github.event.release.tag_name }}" Vireo-macOS.zip --clobber
+        env: { GH_TOKEN: "${{ github.token }}", TAG: "${{ github.event.release.tag_name || inputs.tag }}" }
+        run: gh release upload "$TAG" Vireo-macOS.zip --clobber
