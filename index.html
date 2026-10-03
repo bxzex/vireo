@@ -228,7 +228,7 @@ body{min-height:100vh;display:flex;flex-direction:column;align-items:center}
   <div><h4>Plugin for Windows</h4><p>VST3 for FL Studio, Ableton Live, Reaper, Cubase and Bitwig. 64-bit.</p><a class="btn" href="https://github.com/bxzex/vireo/releases/latest/download/Vireo-Windows.zip">Download for Windows</a></div>
   <div><h4>MIDI kit</h4><p>Melodies, basslines, chord progressions and arps in four keys, ready to drop onto any track.</p><a class="btn" href="#" id="kzip2">Download the kit</a></div>
 </div>
-<div class="foot">© 2026 bxzex. Vireo runs on the Web Audio API in one HTML file. Keys A to K play notes, Z and X change octave. <a href="https://github.com/bxzex/vireo">Source</a></div>
+<div class="foot">© 2026 <a href="https://bxzex.com">bxzex</a>. Vireo runs on the Web Audio API in one HTML file. Keys A to K play notes, Z and X change octave. <a href="https://github.com/bxzex/vireo">Source</a></div>
 
 <script>
 "use strict";
@@ -1203,6 +1203,7 @@ function drawKits(){
 }
 $("#kits").onclick=()=>{ const k=$("#kitbox"); k.classList.toggle("show"); $("#kits").classList.toggle("on",k.classList.contains("show")); browser.classList.remove("show"); $("#browse").classList.remove("on"); drawKits(); };
 $("#kclose").onclick=()=>{ $("#kitbox").classList.remove("show"); $("#kits").classList.remove("on"); };
+addEventListener("keydown",e=>{ if(e.key==="Escape"){ $("#kitbox").classList.remove("show"); $("#kits").classList.remove("on"); browser.classList.remove("show"); $("#browse").classList.remove("on"); } });
 $("#kzip").onclick=$("#kzip2").onclick=e=>{ e.preventDefault(); saveBlob(kitZip(),"Vireo MIDI Kit.zip"); };
 
 /* ============================================================
